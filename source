@@ -1,5 +1,4 @@
 getgenv().autoweight = false;
-getgenv().buyegg = false;
 getgenv().autocapacity = false;
 getgenv().autosell = false;
 
@@ -7,13 +6,11 @@ getgenv().autosell = false;
 
 
 
-local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua')))()
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/borntodiekuv/Lift/main/source')))()
 
 local w = library:CreateWindow("Anime Lifting Simulator") 
 
 local b = w:CreateFolder("AutoFarm") 
-
-local c = w:CreateFolder("Eggs") 
 
 local d = w:CreateFolder("Credit") 
 
