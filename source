@@ -1,4 +1,5 @@
 getgenv().autoweight = false;
+
 getgenv().autocapacity = false;
 getgenv().autosell = false;
 
@@ -6,7 +7,7 @@ getgenv().autosell = false;
 
 
 
-local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/borntodiekuv/Lift/main/source')))()
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua')))()
 
 local w = library:CreateWindow("Anime Lifting Simulator") 
 
