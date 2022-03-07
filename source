@@ -1,5 +1,4 @@
 getgenv().autoweight = false;
-
 getgenv().autocapacity = false;
 getgenv().autosell = false;
 
