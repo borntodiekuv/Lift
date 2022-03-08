@@ -1,109 +1,79 @@
-getgenv().autoweight = false;
-getgenv().autocapacity = false;
-getgenv().autosell = false;
-
-
-
-
-
-local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua')))()
-
-local w = library:CreateWindow("Anime Lifting Simulator") 
-
-local b = w:CreateFolder("AutoFarm") 
-
-local d = w:CreateFolder("Credit") 
-
-b:Toggle("Auto Weight",function(bool)
-    getgenv().autoweight = bool
-    print(shared.toggle)
-    if bool then
-        doWeight();
+for i,v in next, game.CoreGui:GetChildren() do
+    if v.Name == "ScreenGui" and v.ImageButton then
+        v:Destroy()
     end
-end)
-
-b:Toggle("Auto Sell",function(bool)
-    getgenv().autosell = bool
-    print(shared.toggle)
-    if bool then
-        doAutoSell();
     end
-end)
 
-b:Toggle("Auto Sell at Max Capacity",function(bool)
-    getgenv().autocapacity = bool
-    print(shared.toggle)
-    if bool then
-        doAutoCapacity();
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/sannin9000/Ui-Libraries/main/uwuware", true))()
+
+local Window = Library:CreateWindow"Anime Lifting"
+
+Window:AddButton({text = "Hide Name", flag = "button", callback = function()
+for i,v in next, game.Players.LocalPlayer.Character.Head:GetChildren() do
+    if v:IsA"BillboardGui" then
+        v:Destroy()
     end
-end)
+    end
+end})
 
-d:Label("Made by Borntodie1",{
-    TextSize = 25; 
-    TextColor = Color3.fromRGB(255,255,255); 
-    BgColor = Color3.fromRGB(69,69,69); 
+local egglist = {
+    "DragonStarDispenser",
+    "ShinobiStarDispenser",
+    "PirateStarDispenser",
+    "DemonStarDispenser"}
+
+Window:AddList({text = "Eggs", flag = "list", values = egglist, callback = function(elist)
+getgenv().eggopen = elist
+end})
+
+Window:AddToggle({text = "Auto Open Egg", flag = "toggle", state = false, callback = function(a)
+aa = a
+while aa do task.wait()
+game:GetService("ReplicatedStorage").Events.Hatch:FireServer(tostring(eggopen))
+end
+end})
+
+Window:AddToggle({text = "Auto Weight", flag = "toggle", state = false, callback = function(b)
+bb = b
+while bb do task.wait()
+game:GetService("ReplicatedStorage").Events.Training:FireServer("Lift")
+end
+end})
+
+Window:AddToggle({text = "Auto Sell", flag = "toggle", state = false, callback = function(c)
+    cc = c
+    while cc do task.wait()
+        for i,v in pairs(game:GetService("Workspace").Areas.Valley.Pads.Sell:GetDescendants()) do
+            if v:IsA("TouchTransmitter") then
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+            wait()
+            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
+            end
+        end
+    end
+end})
     
-}) 
-
-d:DestroyGui()
-
-
-
-
--- Services
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
--- Variables
 local Sell = Workspace.Areas.Valley.Pads.Sell.Part
 local Player = Players.LocalPlayer
 local Data = Player.PlayerScripts.LocalHandler.ReturnMod:Invoke("ReplicatedData")
 local Chi = require(ReplicatedStorage.Chi)
 local Training = ReplicatedStorage.Events.Training
 
-
-
-
-
-
--- Farm
-function doWeight()
-    spawn(function()
-
-    while getgenv().autoweight == true do
-        local args = {
-        [1] = "Lift"
-        }
-        game:GetService("ReplicatedStorage").Events.Training:FireServer(unpack(args))
-        wait()
-    end
-end)
+Window:AddToggle({text = "Auto Sell at Max Capacity", flag = "toggle", state = false, callback = function(d)
+dd = d
+while dd do task.wait()
+if Data.get("Strength") >=Chi.getChiInfo(Data.get("curChi")).capacity then
+    firetouchinterest(Player.Character.HumanoidRootPart, Sell, 0)
+    firetouchinterest(Player.Character.HumanoidRootPart, Sell, 1)
 end
-
-function doAutoSell()
-    spawn(function()
-        while getgenv().autosell do
-            wait()
-            for _,v in pairs(game:GetService("Workspace").Areas.Valley.Pads.Sell:GetDescendants()) do
-            if v:IsA("TouchTransmitter") then
-            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
-            wait()
-            firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
-            wait()
-               end
-             end
-            end
-        end)
 end
+end})
+    
+Window:AddFolder"Credits"
 
-function doAutoCapacity()
-    spawn(function()
-        while getgenv().autocapacity == true and task.wait(0.05) do
-                if Data.get("Strength") >=Chi.getChiInfo(Data.get("curChi")).capacity then
-                    firetouchinterest(Player.Character.HumanoidRootPart, Sell, 0)
-                    firetouchinterest(Player.Character.HumanoidRootPart, Sell, 1)
-                end
-            end
-        end)
-    end
+Window:AddLabel({text = "Made by Borntodie1 on v3rm"})
+
+Library:Init()
