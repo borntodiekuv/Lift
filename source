@@ -24,6 +24,13 @@ for i,v in pairs((game:GetService("ReplicatedStorage").GameAssets.OnFireParticle
    table.insert(Classes,tostring(v))
 end
 
+local Dispensers = {}
+
+for i,v in pairs(workspace.Areas:GetDescendants()) do
+    if v:IsA"Model" and v.Parent.Name == "Dispensers" then
+        table.insert(Dispensers,tostring(v))
+    end
+end
 
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
@@ -79,6 +86,7 @@ sect1:AddToggle("Auto Buy Weight", false, function(e)
         while ee do task.wait(5)
         
             for i = 1,#Weights do
+                
                 local ohString1 = Weights[i]
                 
                 game:GetService("ReplicatedStorage").Events.BuyWeight:FireServer(ohString1)
@@ -116,20 +124,18 @@ sect1:AddToggle("Auto Buy Weight", false, function(e)
 
             local sect2 = tab1:CreateSector("Dispensers", 'right')
 
-            local egglist = {
-                "DragonStarDispenser",
-                "ShinobiStarDispenser",
-                "PirateStarDispenser",
-                "DemonStarDispenser"}
-            
-                sect2:AddDropdown("Dropdown",egglist, 'DragonStarDispenser', false, function(elist)
-                    getgenv().eggopen = elist
+    
+              local Dispenser =  sect2:AddDropdown("Select Dispenser",Dispensers, 'DragonStarDispenser', false, function(selected)
+                getgenv().selectedDispensers = selected
             end)
+            
+        
             
             sect2:AddToggle("Auto Buy Dispenser", false, function(a)
                 aa = a
             while aa do task.wait()
-            game:GetService("ReplicatedStorage").Events.Hatch:FireServer(tostring(eggopen))
+                local ohString1 = selectedDispensers
+            game:GetService("ReplicatedStorage").Events.Hatch:FireServer(tostring(ohString1))
             end
             end)
          
